@@ -1,0 +1,51 @@
+# coding=utf-8
+from __future__ import division
+import heatmap
+import datetime
+from time import mktime
+import gridfs
+import tempfile
+from random import randint
+from config.db import token,user,weibo_list,js
+from config.weibo import la,lb,lc,ld,le
+import weibo
+from weibo import APIClient
+
+
+APP_KEY = '893013673' # app key
+APP_SECRET = 'd5e5ea7694fc8e63e6f348abb31104cb' # app secret
+CALLBACK_URL = 'https://api.weibo.com/oauth2/default.html' # callback url
+
+client = APIClient(app_key=APP_KEY, app_secret=APP_SECRET, redirect_uri=CALLBACK_URL)
+
+#获取uid
+uid_list = []
+user_list = user.find(({'project.projectId':{'$in':[la,lb,lc,ld,le]}}))
+for elem in user_list:
+    uid = elem['sina']['idstr']
+    uid_list.append(int(uid))
+    
+#about access_token
+access = []
+cursor = token.find().sort('expireTime',-1).limit(100)
+for elem in cursor:
+    a = elem['access_token']
+    b = elem['expireTime']
+    b = b.timetuple()
+    b = mktime(b)
+    access.append(tuple([a,b]))
+
+for elem in uid_list:
+    num = randint(1,100)
+    client.set_access_token(access[num][0],access[num][1])
+    status = client.place.user_timeline.get(uid = elem)
+    a = status['statuses']
+    print len(a)
+    for item in a:
+        weibo_list.insert(item)
+    print elem
+
+
+#print a[0]['geo']['coordinates']
+
+

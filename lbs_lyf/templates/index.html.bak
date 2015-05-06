@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+    <head><title>Poem Maker Pro</title></head>
+    <body>
+        <h1>Enter terms below.</h1>
+        <form method="post" action="/poem">
+        <p>Store Name<br><input type="text" name="noun1"></p>
+        <input type="submit">
+        </form>
+    </body>
+</html>

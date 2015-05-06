@@ -1,0 +1,13 @@
+storeID(必选):店铺ID
+time_begin(可选):UNIX时间戳(默认为0)
+time_end(必选):UNIX时间戳
+distance_min(可选):距离(默认为0)float
+distance_max(必选):距离 float
+item_count(可选):查看条目数(默认为10) int
+skip_item(可选):跳过条目数(默认为0) int
+sort_key(可选):排序方式[‘time’, ‘distance’] (默认为时间排序)
+本地地址：
+http://211.152.60.33:8888/?storeID=*&time_end=*
+
+程序地址：
+http://10.0.0.200:8888/?storeID=*&time_end=*

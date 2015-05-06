@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>掐指一算！你会艳遇谁？</title>
+    <!--移动平台-->
+    <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+</head>
+<body>
+<div class="rule">
+     <div class="rule_content">
+          <div class="rule_title">
+               <p>规则说明</p>
+          </div>
+          <div class="rule_text">
+               <p>冰天雪地360度后空翻来万能的大国泰求个和美铝帅锅“相遇”的机会么</p>
+               <p>现在是相当简单了<br>
+                  填上你的名字<br>
+                  有缘人就粗线鸟~
+               </p>
+              <p>不用告诉我你滴性取向<br>
+                  反正我们已经告诉你他（她）的名字了<br>
+                  若是觉得自己总是和猪头鸟人相遇<br>
+                  那么只能怪你的上班时间不对<br>
+                  还有<br>
+                  天天加班人注定孤独
+              </p>
+              <p>是为单身人士带来福音<br>
+                还是为已婚人士带来灾难<br>
+                  和ICC后台数据中心没有半毛钱关系啊~<br>
+                  我和你什么仇什么怨嘛
+
+              </p>
+              <p>有数据就是这么任性</p>
+          </div>
+          <div class="rule_footer">
+                <p>关于K-means算法的科普知识，请戳这里：</p>
+              <a href="">ICC后台数据中心K-means算法研究组</a>
+          </div>
+     </div>
+</div>
+
+</body>
+</html>

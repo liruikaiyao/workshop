@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>掐指一算！你会艳遇谁？</title>
+    <!--移动平台-->
+    <link rel="stylesheet" type="text/css" href="css/reset.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+</head>
+<body>
+<div class="rule result">
+      <div class="result_content">
+           <p>你与他（她）上班最可能相遇哦~</p>
+           <span>（按相遇指数降序排列）</span>
+      </div>
+      <div class="result_list">
+           <div class="result_list_detail">
+               <div class="result_list_women">
+                    <p>美女♀：</p>
+                    <ul>
+                      {% for name in female %}
+                        {% block name %}
+                          <li><p>{{ escape(name) }}</p></li>
+                        {% end %}
+                      {% end %}
+                    </ul>
+               </div>
+               <div class="result_list_man">
+                   <p>帅哥♂：</p>
+                    <ul>
+                      {% for name in male %}
+                        {% block name %}
+                          <li><p>{{ escape(name) }}</p></li>
+                        {% end %}
+                      {% end %}
+                    </ul>
+               </div>
+           </div>
+      </div>
+      <div class="result_footer">
+          <img src="images/result_footer.jpg" alt=""/>
+      </div>
+</div>
+
+</body>
+</html>

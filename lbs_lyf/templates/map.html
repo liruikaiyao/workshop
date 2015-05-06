@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+        body, html,#allmap {width: 100%;height: 97%;overflow: hidden;margin:0;font-family:"微软雅黑";}
+        #l-map{height:100%;width:78%;float:left;border-right:2px solid #bcbcbc;}
+        #r-result{height:100%;width:20%;float:left;}
+    </style>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=SIpMcORCSogM916QMOz5tx7S"></script>
+    <title>添加多个标注点</title>
+</head>
+<body>
+    <div id="allmap"></div>
+    <div id="r-result">
+        <input type="button" onclick="showOver()" value="显示" />
+        <input type="button" onclick="hideOver()" value="隐藏" />
+    </div>
+</body>
+</html>
+<script type="text/javascript">
+    // 百度地图API功能
+    var StoreInfo = {% raw store_info %};
+    var PointList = {% raw pointList %};
+    
+    var top_left_control = new BMap.ScaleControl({anchor: BMAP_ANCHOR_TOP_LEFT});// 左上角，添加比例尺
+    var top_left_navigation = new BMap.NavigationControl();  //左上角，添加默认缩放平移控件
+    
+    var map = new BMap.Map("allmap", {enableMapClick:false});//构造底图时，关闭底图可点功能
+    var store = new BMap.Point(StoreInfo['loc'][0],StoreInfo['loc'][1]);
+    map.centerAndZoom(store, 15); // 初始化地图,设置中心点坐标和地图级别
+    map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+    map.addControl(new BMap.MapTypeControl()); //添加地图类型控件
+    map.enableDragging(); //开启鼠标拖拽
+    map.addControl(top_left_control); // 左上角，添加比例尺
+    map.addControl(top_left_navigation);  //左上角，添加默认缩放平移控件
+    addIconLabel(store,StoreInfo['store_name']);
+    addCurve(store,StoreInfo['store_id']);
+    //addCircle(store,StoreInfo['max_dist']);
+    //addCircle(store,StoreInfo['min_dist']);
+    //addCircle(store,StoreInfo['mean_dist']);
+    //addCircle(store,StoreInfo['median_dist']);
+    var max = new BMap.Circle(store,StoreInfo['max_dist']*1000,{strokeColor:"red", strokeWeight:1, strokeOpacity:1});
+    map.addOverlay(max);
+    var median = new BMap.Circle(store,StoreInfo['median_dist']*1000,{strokeColor:"red", strokeWeight:1, strokeOpacity:1});
+    map.addOverlay(median);
+    var mean = new BMap.Circle(store,StoreInfo['mean_dist']*1000,{strokeColor:"red", strokeWeight:1, strokeOpacity:1});
+    map.addOverlay(mean);
+    
+    
+    for(var i in PointList){
+            var point = new BMap.Point(PointList[i][0],PointList[i][1]);
+            addMarker(point);
+            }
+
+    // 添加普通点
+    function addMarker(point){
+        var marker = new BMap.Marker(point);
+        map.addOverlay(marker);
+    }
+    // 添加自定义icon点
+    function addIcon(pt){
+        var myIcon = new 
+        BMap.Icon("http://developer.baidu.com/map/jsdemo/img/fox.gif", new 
+        BMap.Size(300,157));
+        var marker2 = new BMap.Marker(pt,{icon:myIcon});  // 创建标注
+        map.addOverlay(marker2);              // 将标注添加到地图中
+    }
+    // 添加标注点
+    function addLabel(point,text){         // text是label内容
+        var marker = new BMap.Marker(point);  // 创建标注
+        map.addOverlay(marker);              // 将标注添加到地图中
+        var label = new BMap.Label(text,{offset:new BMap.Size(20,-10)});
+        marker.setLabel(label);
+    }
+    // 添加自定义Icon的标注点
+    function addIconLabel(point,text){  // text是label内容
+        var myIcon = new 
+        BMap.Icon("http://liruikaiyao.qiniudn.com/ylw-pushpin.png", new 
+        BMap.Size(64,64));    //自定义Icon
+        var marker = new BMap.Marker(point,{icon:myIcon});  // 创建标注
+        map.addOverlay(marker);              // 将标注添加到地图中
+        var label = new BMap.Label(text,{offset:new BMap.Size(20,-10)});
+        marker.setLabel(label);
+    }
+    //添加生存风险曲线图
+    function addCurve(point,store_id){
+        var sContent =
+        "<div style='width: 600px;overflow: hidden;'><h4 style='margin:0 0 5px 0;padding:0.2em 0;width: 100%;text-align: center;'>"+
+        StoreInfo['store_name']+"</h4>" +
+        "<img style='float:right;margin:4px;width: 75%;' id='imgDemo' src='images/"+store_id+".png''/>" +
+        "<p style='margin:0;line-height:1.5;font-size:13px;width: 20%;float: left;text-align: left;margin-top: 40px'>最大距离："+
+        StoreInfo['max_dist'].toFixed(2)+"Km<br />最小距离："+StoreInfo['min_dist'].toFixed(2)+
+        "Km<br />中位数距离："+StoreInfo['median_dist'].toFixed(2)+"Km<br />平均距离："+
+        StoreInfo['mean_dist'].toFixed(2)+"Km<br />用户数："+StoreInfo['user_num']+"<br />LBS点数："+
+        StoreInfo['point_num']+"</p>" + "</div>";
+        var marker = new BMap.Marker(point);
+        var infoWindow = new BMap.InfoWindow(sContent);  // 创建信息窗口对象
+        map.addOverlay(marker);
+        marker.addEventListener("click", function(){
+           this.openInfoWindow(infoWindow);
+           //图片加载完毕重绘infowindow
+           document.getElementById('imgDemo').onload = function (){
+               infoWindow.redraw();   //防止在网速较慢，图片未加载时，生成的信息框高度比图片的总高度小，导致图片部分被隐藏
+           }
+        });
+    }
+    //添加范围圆圈
+    function addCircle(point,radius){
+        var oval = new BMap.Circle(point,radius*1000,{strokeColor:"red", strokeWeight:1, strokeOpacity:1});
+        map.addOverlay(oval);
+    }
+    
+    function showOver(){
+        max.show(); median.show();mean.show();
+    }
+    function hideOver(){
+        max.hide(); median.hide();mean.hide();
+    }
+
+</script>

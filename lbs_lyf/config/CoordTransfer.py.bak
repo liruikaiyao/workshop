@@ -1,0 +1,17 @@
+#coding=utf-8
+
+from __future__ import division,unicode_literals
+import urllib2
+import json
+
+
+########################################################################
+
+def gps2bd(point):
+    api_url = u'http://api.map.baidu.com/geoconv/v1/?'
+    ak='SIpMcORCSogM916QMOz5tx7S'
+    coords=point
+    result = urllib2.urlopen(api_url+'coords='+str(coords[0])+','+str(coords[1])+'&ak='+ak)
+    b=result.read()
+    c=json.loads(b)
+    return c['result'][0].values()

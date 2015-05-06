@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>Poem Maker Pro</title>
+     <link rel="stylesheet" href="//apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+  <script src="//apps.bdimg.com/libs/jquery/1.10.2/jquery.min.js"></script>
+  <script src="//apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="http://jqueryui.com/resources/demos/style.css">
+  <script>
+  $(function() {
+    $( "#datepicker" ).datepicker();
+  });
+  </script>
+    </head>
+    <body>
+        <h1>Enter terms below.</h1>
+        <form method="post" action="/result">
+        <p>store ID<br><input type="text" name="storeID"></p>
+        <p>distance range<br><input type="text" name="distance"></p>
+        <p>日期：<br><input type="text" id="datepicker" name="from_time"></p>
+        <input type="submit">
+        </form>
+    </body>
+</html>

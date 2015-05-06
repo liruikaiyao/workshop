@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2">
+    <Document id="feat_5">
+        <Placemark id="feat_6">
+            <name>Kirstenbosch</name>
+            <description>A botanical Garden</description>
+            <Point id="geom_2">
+                <coordinates>18.432314,-33.988862,0.0</coordinates>
+            </Point>
+        </Placemark>
+    </Document>
+</kml>

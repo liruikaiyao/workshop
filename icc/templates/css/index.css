@@ -1,0 +1,40 @@
+
+body{background: #ece9f2;font-family: 'microsoft yahei';}
+a:hover{text-decoration: none;}
+.allLayout{width: 1024px;height: 768px;margin: 0 auto;background: url("../images/index_bg.jpg") no-repeat 0 0;}
+.content{width: 100%;margin: 0 auto;}
+.content_title{padding-top: 65px;overflow: hidden;text-align: center;}
+.content_detail{padding-top: 75px;overflow: hidden;margin: 0 auto;text-align: center;}
+.content_detail_list{width: 400px;margin: 0 auto;overflow: hidden;padding-bottom: 30px;}
+.content_detail p.list{color: #000000;font-size: 30px;width: 250px;float: left;}
+.content_detail input{float: left;border: 0;border-radius: 25px;margin-left: 10px;text-align: center;width: 140px;font-size: 26px;margin-top: 4px;}
+.content_detail select{width: 150px;border: 0;border-radius: 25px;text-align: center;font-size: 30px;float: left;padding-left: 50px;}
+.content_detail select option{text-align: center;}
+.content_detail p.submit_btn{padding-top: 20px;overflow: hidden;padding-left: 100px;}
+.content_detail p input.submit_btn{background: #666aa4;color: #ffffff;font-size: 30px;text-align: center;padding: 5px;width: 200px;}
+.content_footer{padding-top: 200px;overflow: hidden;}
+.content_footer a{border-radius: 25px;width: 160px;display: block;background: #e7e5eb;float: left;color: #666aa4;font-size: 26px;margin-left: 40px;}
+.content_footer img{float: right;margin-right: 30px;margin-top: 13px;}
+
+/*活动规则*/
+.rule{width: 1024px;min-height: 768px;margin: 0 auto;background: url("../images/rule_bg_01.jpg") no-repeat 0 0 #f8f8fa; }
+.rule_title{width: 100%;overflow: hidden}
+.rule_title p{width: 200px;margin: 0 auto;margin-top: 30px;background: #ffffff;color: #666aa4;border-radius: 25px;font-size: 30px;}
+.rule_text{width: 800px;margin: 0 auto;margin-top: 40px;text-align: center;}
+.rule_text p{font-size: 18px;color: #353535;padding-bottom: 20px;}
+.rule_footer{width: 100%;padding-top: 10px}
+.rule_footer p{color: #8184b4;font-size: 20px;}
+.rule_footer a{color: #8184b4;font-size: 26px;padding-top: 50px;display: block}
+
+/*结果查询*/
+.result_content{width: 100%;padding-top: 80px;overflow: hidden;}
+.result_content p{color: #666aa4;font-size: 32px;text-align: center;padding-bottom: 25px;}
+.result_content span{font-size: 20px;text-align: center;color: #666aa4}
+.result_list{margin-top: 50px;overflow: hidden;padding-bottom: 50px;min-height: 450px;}
+.result_list_detail{width: 600px;margin: 0 auto;overflow: hidden;}
+.result_list_women{width: 300px;float: left;}
+.result_list_detail p{font-size: 20px;color: #666aa4;letter-spacing: 15px;padding-bottom: 10px}
+.result_list_detail li{padding-bottom: 5px;}
+.result_list_detail  li p{color: #000000;padding-bottom: 0;letter-spacing: 5px;}
+.result_list_man{float: left;width: 300px;overflow: hidden}
+.result_footer{}
