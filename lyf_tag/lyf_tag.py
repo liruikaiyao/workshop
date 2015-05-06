@@ -1,3 +1,4 @@
+__author__ = 'Carry lee'
 #coding=utf-8
 import urllib2,urllib
 import json
@@ -134,7 +135,9 @@ print time.time()-time_start
 print len(user_dict)
 print user_dict.items()[0]
 user_dict = {k: list(set(v)) for k, v in user_dict.items()}
-tag=reduce(lambda x,y:x+y,user_dict.values())
+tag=[]
+for elem in user_dict.values():
+    tag.extend(elem)
 tag_count=Counter(tag)
 for k,v in tag_count.items():
     print k,v
