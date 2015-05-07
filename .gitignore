@@ -2,5 +2,7 @@
 ## PyCharm
 #################
 
-.idea
+*.xml
+*.iml
+.name
 
