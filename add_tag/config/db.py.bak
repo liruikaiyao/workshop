@@ -1,0 +1,6 @@
+from pymongo import MongoClient
+
+data_ip = '10.0.0.30'
+client = MongoClient(data_ip, 57017)
+ICCv1 = client['ICCv1']
+mapreduce = client['mapreduce']

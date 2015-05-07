@@ -1,1 +1,1 @@
-git my work code about data mining and meachine leaning.
+My work code about data mining and meachine leaning.
