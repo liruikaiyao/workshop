@@ -5,6 +5,4 @@ from bs4 import BeautifulSoup
 
 url=''
 a = []
-b = []
-for elem in a:
-	b.extend(elem)
+
