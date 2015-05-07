@@ -217,5 +217,7 @@ pip-log.txt
 
 #Pycharm project config file
 *.xml
-
+*.iml
+*.name
+.idea
 
