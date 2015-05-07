@@ -5,4 +5,6 @@ from bs4 import BeautifulSoup
 
 url=''
 a = []
+b = []
+b = b.extend(a)
 
