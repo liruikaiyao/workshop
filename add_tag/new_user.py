@@ -29,6 +29,7 @@ for item in new_user_tag_config.find({'__REMOVED__': False}):
     time_min = time_max - datetime.timedelta(day)
     user_list = [elem['FromUserName'] for elem in target_collection.find({'Event': 'subscribe',
                                                                           '__REMOVED__': False,
+                                                                          'FromUserName': {'$exists': True},
                                                                           '__CREATE_TIME__': {'$gt': time_min}})]
     user_list = list(set(user_list))
     for elem in user_list:
