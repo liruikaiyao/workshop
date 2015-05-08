@@ -1,5 +1,5 @@
-__author__ = 'Carry lee'
 # coding=utf-8
+__author__ = 'Carry lee'
 import datetime
 from config.db import mapreduce
 
@@ -7,7 +7,7 @@ active_user_tag_config = mapreduce['active_user_tag_config']
 active_user_tag_config.remove({})
 example = dict()
 example['host'] = 'laiyifendemo.umaman.com'
-example['remark'] = '最近关注5天内'
+example['remark'] = '最近30天内互动次数超过2次'
 example['day'] = 30
 example['database'] = 'ICCv1'
 example['collection'] = '55078670b1752fad378b4742'
