@@ -51,20 +51,20 @@ for item in new_user_tag_config.find({'__REMOVED__': False}):
     # 添加标签
 
     # for k, v in user_dict.items():
-    #     two = urllib.urlencode({'identifyId': k, 'tags[]': list(set(v))}, True)
-    #     try:
-    #         req = urllib2.Request(url, two)
-    #         response = urllib2.urlopen(req)
-    #         result = response.read()
-    #         result = json.loads(result)
-    #         result['FromUserName'] = k
-    #         log.insert(result)
-    #     except Exception as e:
-    #         print k
-    #         print e
-    #         print type(e)
-    #         a = {'FromUserName': k, 'error': str(e)}
-    #         failed_log.insert(a)
+    # two = urllib.urlencode({'identifyId': k, 'tags[]': list(set(v))}, True)
+    # try:
+    # req = urllib2.Request(url, two)
+    # response = urllib2.urlopen(req)
+    # result = response.read()
+    # result = json.loads(result)
+    # result['FromUserName'] = k
+    # log.insert(result)
+    # except Exception as e:
+    # print k
+    # print e
+    # print type(e)
+    # a = {'FromUserName': k, 'error': str(e)}
+    # failed_log.insert(a)
     #         continue
 
     print time.time() - time_start

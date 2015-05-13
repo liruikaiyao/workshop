@@ -1,6 +1,5 @@
-__author__ = 'Carry lee'
 # coding=utf-8
-# -*- coding: utf-8 -*-
+__author__ = 'Carry lee'
 import datetime
 import time
 from collections import defaultdict, Counter
@@ -30,6 +29,7 @@ for item in new_user_tag_config.find({'__REMOVED__': False}):
     time_min = time_max - datetime.timedelta(day)
     user_list = [elem['FromUserName'] for elem in target_collection.find({'Event': 'subscribe',
                                                                           '__REMOVED__': False,
+                                                                          'FromUserName': {'$exists': True},
                                                                           '__CREATE_TIME__': {'$gt': time_min}})]
     user_list = list(set(user_list))
     for elem in user_list:
@@ -40,7 +40,7 @@ for item in new_user_tag_config.find({'__REMOVED__': False}):
     # test
     print len(user_dict)
     print user_dict.items()[0]
-    # user_dict = {k: list(set(v)) for k, v in user_dict.items()}
+    user_dict = {k: list(set(v)) for k, v in user_dict.items()}
     tag = []
     for elem in user_dict.values():
         tag.extend(elem)
@@ -51,20 +51,20 @@ for item in new_user_tag_config.find({'__REMOVED__': False}):
     # 添加标签
 
     # for k, v in user_dict.items():
-    #     two = urllib.urlencode({'identifyId': k, 'tags[]': list(set(v))}, True)
-    #     try:
-    #         req = urllib2.Request(url, two)
-    #         response = urllib2.urlopen(req)
-    #         result = response.read()
-    #         result = json.loads(result)
-    #         result['FromUserName'] = k
-    #         log.insert(result)
-    #     except Exception as e:
-    #         print k
-    #         print e
-    #         print type(e)
-    #         a = {'FromUserName': k, 'error': str(e)}
-    #         failed_log.insert(a)
+    # two = urllib.urlencode({'identifyId': k, 'tags[]': list(set(v))}, True)
+    # try:
+    # req = urllib2.Request(url, two)
+    # response = urllib2.urlopen(req)
+    # result = response.read()
+    # result = json.loads(result)
+    # result['FromUserName'] = k
+    # log.insert(result)
+    # except Exception as e:
+    # print k
+    # print e
+    # print type(e)
+    # a = {'FromUserName': k, 'error': str(e)}
+    # failed_log.insert(a)
     #         continue
 
     print time.time() - time_start
