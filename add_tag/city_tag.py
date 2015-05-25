@@ -8,6 +8,8 @@ from config.db import ICCv1, mapreduce
 import urllib
 import urllib2
 import json
+import threading
+import multiprocessing
 
 lyf = ICCv1['lyf']
 user_info = mapreduce['user_info']
@@ -30,6 +32,18 @@ def getcity(one):
     except Exception as e:
         print e
 
+begin = time.time()
+if __name__ == '__main__':
+    multiprocessing.freeze_support()
+    p = multiprocessing.Pool(processes=3)
+    result = []
+    for elem in lyf.find({'Event': 'LOCATION'}).limit(1000):
+        result.append(p.apply_async(getcity, (elem, )))
+    p.close()
+    p.join()
+    # for res in result:
+    #     print res.get()
+    print "all task finished"
 
-for elem in lyf.find({'Event': 'LOCATION'}):
-    getcity(elem)
+print time.time() - begin
+
