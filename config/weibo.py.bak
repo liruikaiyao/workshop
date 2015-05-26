@@ -1,5 +1,0 @@
-from weibo import APIClient
-
-APP_KEY = '2068679895' # app key
-APP_SECRET = '3934e5938708d4fb01b0e6e1c826afa0' # app secret
-CALLBACK_URL = 'https://api.weibo.com/oauth2/default.html' # callback url
