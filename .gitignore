@@ -4,6 +4,6 @@
 
 
 .idea
-.pyc
-.bak
+*.pyc
+*.bak
 ipython_log
