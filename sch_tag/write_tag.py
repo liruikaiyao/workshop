@@ -6,20 +6,16 @@ import datetime
 import time
 from collections import defaultdict, Counter
 
-from config.db_server import sch_server
-from config.db import sch, ICCv1, test
+# from config.db_server import sch_server
+from config.db import ICCv1, test, sch
 
-
-points = ICCv1['points']
-order = ICCv1['order']
-member = ICCv1['member']
-first_shop = ICCv1['first_shop']
+# points = ICCv1['points']
+order = sch['order']
+# member = ICCv1['member']
+# first_shop = ICCv1['first_shop']
+hongbao = sch['hongbao']
 log = test['log']
 failed_log = test['failed_log']
-
-sch.ensure_index('__CREATE_TIME__', -1)
-sch.ensure_index('FromUserName', 1)
-points.ensure_index('score_total', -1)
 
 activity_dict = {'yeartab': '羊年开运签',
                  'dream': '奢美逐梦',
@@ -35,75 +31,82 @@ time_start = time.time()
 
 # 会员
 
-for elem in member.find({"__REMOVED__": False}):
-    user_dict[elem['FromUserName']].append('会员')
+# for elem in member.find({"__REMOVED__": False}):
+#     user_dict[elem['FromUserName']].append('会员')
+#
+# print time.time() - time_start
+
+# 红包领取用户
+
+for elem in hongbao.find({"__REMOVED__": False}):
+    user_dict[elem['re_openid']].append('领取红包')
 
 print time.time() - time_start
 
-# 购买用户
-
-for elem in order.find({"__REMOVED__": False, 'trade_state': 0}):
-    user_dict[elem['OpenId']].append('购买用户')
-
-print time.time() - time_start
-
-# 重复购买
-
-for elem in order.find({"__REMOVED__": False, 'trade_state': 0}):
-    count = order.find({'OpenId': elem['OpenId'], "__REMOVED__": False,
-                        'trade_state': 0}).count()
-    if count > 1:
-        user_dict[elem['OpenId']].append('重复购买')
-
-print time.time() - time_start
-
-# 新用户
-
-cursor = sch.find({"__REMOVED__": False}).sort('__CREATE_TIME__', -1)
-time_max = cursor.next()['__CREATE_TIME__']
-time_min = time_max - datetime.timedelta(5)
-user_list = [elem['FromUserName'] for elem in sch.find({'Event': 'subscribe',
-                                                        "__REMOVED__": False,
-                                                        '__CREATE_TIME__': {'$gt': time_min}})]
-user_list = list(set(user_list))
-for elem in user_list:
-    user_dict[elem].append('新用户')
-
-print time.time() - time_start
-
-# 沉睡用户
-
-all_user = [elem['FromUserName'] for elem in sch.find({"__REMOVED__": False, 'FromUserName': {'$exists': True}})]
-time_min = time_max - datetime.timedelta(60)
-late_user = [elem['FromUserName'] for elem in sch.find({"__REMOVED__": False,
-                                                        '__CREATE_TIME__': {'$gt': time_min},
-                                                        'FromUserName': {'$exists': True}})]
-old_user = set(all_user) - set(late_user)
-for elem in old_user:
-    user_dict[elem].append('睡眠用户')
-
-print time.time() - time_start
-
-# 活跃用户
-
-begin = time_max - datetime.timedelta(30)
-user_list = [elem['FromUserName'] for elem in sch.find({"__REMOVED__": False,
-                                                        '__CREATE_TIME__': {'$gt': begin},
-                                                        'FromUserName': {'$exists': True}})]
-user_count = Counter(user_list)
-user_count = sorted(user_count.iteritems(), key=lambda d: d[1], reverse=True)
-for elem in user_count:
-    if elem[1] > 2:
-        user_dict[elem[0]].append('活跃用户')
-
-print time.time() - time_start
-
-# 高积分用户
-
-for elem in points.find().sort('score_total', -1).limit(25):
-    user_dict[elem['user_id']].append('高积分用户')
-
-print time.time() - time_start
+# # 购买用户
+#
+# for elem in order.find({"__REMOVED__": False, 'trade_state': 0}):
+#     user_dict[elem['OpenId']].append('购买用户')
+#
+# print time.time() - time_start
+#
+# # 重复购买
+#
+# for elem in order.find({"__REMOVED__": False, 'trade_state': 0}):
+#     count = order.find({'OpenId': elem['OpenId'], "__REMOVED__": False,
+#                         'trade_state': 0}).count()
+#     if count > 1:
+#         user_dict[elem['OpenId']].append('重复购买')
+#
+# print time.time() - time_start
+#
+# # 新用户
+#
+# cursor = sch.find({"__REMOVED__": False}).sort('__CREATE_TIME__', -1)
+# time_max = cursor.next()['__CREATE_TIME__']
+# time_min = time_max - datetime.timedelta(5)
+# user_list = [elem['FromUserName'] for elem in sch.find({'Event': 'subscribe',
+#                                                         "__REMOVED__": False,
+#                                                         '__CREATE_TIME__': {'$gt': time_min}})]
+# user_list = list(set(user_list))
+# for elem in user_list:
+#     user_dict[elem].append('新用户')
+#
+# print time.time() - time_start
+#
+# # 沉睡用户
+#
+# all_user = [elem['FromUserName'] for elem in sch.find({"__REMOVED__": False, 'FromUserName': {'$exists': True}})]
+# time_min = time_max - datetime.timedelta(60)
+# late_user = [elem['FromUserName'] for elem in sch.find({"__REMOVED__": False,
+#                                                         '__CREATE_TIME__': {'$gt': time_min},
+#                                                         'FromUserName': {'$exists': True}})]
+# old_user = set(all_user) - set(late_user)
+# for elem in old_user:
+#     user_dict[elem].append('睡眠用户')
+#
+# print time.time() - time_start
+#
+# # 活跃用户
+#
+# begin = time_max - datetime.timedelta(30)
+# user_list = [elem['FromUserName'] for elem in sch.find({"__REMOVED__": False,
+#                                                         '__CREATE_TIME__': {'$gt': begin},
+#                                                         'FromUserName': {'$exists': True}})]
+# user_count = Counter(user_list)
+# user_count = sorted(user_count.iteritems(), key=lambda d: d[1], reverse=True)
+# for elem in user_count:
+#     if elem[1] > 2:
+#         user_dict[elem[0]].append('活跃用户')
+#
+# print time.time() - time_start
+#
+# # 高积分用户
+#
+# for elem in points.find().sort('score_total', -1).limit(25):
+#     user_dict[elem['user_id']].append('高积分用户')
+#
+# print time.time() - time_start
 
 # 商品名称
 
@@ -115,9 +118,9 @@ print time.time() - time_start
 
 # 参与活动
 
-for elem in sch_server.find({'event': {'$in': activity_dict.keys()}}):
-    event = elem['event']
-    user_dict[elem['fromusername']].append(activity_dict[event])
+# for elem in sch_server.find({'event': {'$in': activity_dict.keys()}}):
+#     event = elem['event']
+#     user_dict[elem['fromusername']].append(activity_dict[event])
 
 # print time.time()-time_start
 

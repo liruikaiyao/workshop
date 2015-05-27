@@ -44,7 +44,8 @@ for elem in unique_list:
 print time.time()-time_bigin
 
 #会员
-for elem in 
+for elem in member.find({"__REMOVED__": False}):
+    user_dict[elem['FromUserName']].append('会员')
 
 #最近五天内关注的新用户
 for item in unique_list:

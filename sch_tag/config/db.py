@@ -1,9 +1,10 @@
 import pymongo
 from pymongo import MongoClient
+from pytz import timezone
 
-client = MongoClient('localhost', 27017)
+tz = timezone("Asia/Shanghai")
+client = MongoClient('localhost', 27017, tz_aware=True)
 ICCv1 = client['ICCv1']
-umav3 = client['umav3']
-bda = client['bda']
-sch = ICCv1['schwarzkopf']
+sch = client['schwarzkopf']
 test = client['test']
+mapreduce = client['mapreduce']
