@@ -1,7 +1,7 @@
 #coding=utf-8
 import numpy as np
 from config.db_server import sch_server
-from config.db import sch,bda,ICCv1
+from config.db import sch,ICCv1,mapreduce
 import time
 import datetime
 from collections import Counter
@@ -11,7 +11,7 @@ points = ICCv1['points']
 order = ICCv1['order']
 cart = ICCv1['cart']
 member = ICCv1['member']
-sch_info = bda['schwarzkopf_tag']
+sch_info = mapreduce['schwarzkopf_tag']
 first_shop = ICCv1['first_shop']
 
 #清洗event
@@ -62,7 +62,9 @@ print time.time()-time_bigin
 #近三个月没活动的沉睡用户
 for item in unique_list:
     try:
-        last_time=max(np.array([elem['__CREATE_TIME__'] for elem in sch.find({'FromUserName':item,"__REMOVED__" : False})]))
+        last_time=max(np.array([elem['__CREATE_TIME__'] for elem in sch.find(
+            {'FromUserName':item,
+             "__REMOVED__" : False})]))
         if (time_max-last_time).days>60:
             user_dict[item]['sleep']=True
         else:
