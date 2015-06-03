@@ -13,6 +13,7 @@ from config.db import ICCv1, test, sch
 order = sch['order']
 # member = ICCv1['member']
 # first_shop = ICCv1['first_shop']
+kjw = sch['kanjiawu']
 hongbao = sch['hongbao']
 log = test['log']
 failed_log = test['failed_log']
@@ -42,6 +43,11 @@ for elem in hongbao.find({"__REMOVED__": False}):
     user_dict[elem['re_openid']].append('领取红包')
 
 print time.time() - time_start
+
+#核心用户
+
+for elem in kjw.find({"__REMOVED__": False,'total_bargain_num':{'$gte':10}}):
+    user_dict[elem['code']].append('')
 
 # # 购买用户
 #

@@ -2,6 +2,7 @@
 __author__ = 'Carry lee'
 
 import datetime
+import time
 
 from config.db import sh, utc, sch
 
@@ -25,14 +26,19 @@ hbao_user = [elem['re_openid'] for elem in hbao.find()]
 hbao_user = list(set(hbao_user))
 
 activate_user = []
+start = time.time()
 for item in hbao_user:
     try:
         last_time = max([elem['__CREATE_TIME__'] for elem in weixin.find(
             {'FromUserName': item,
              "__REMOVED__": False,
              '__CREATE_TIME__': {'$lte': utc_begin}})])
-    except Exception as e:
-        pass
+    except ValueError as e:
+        print e
+    except:
+        print "Unexpected error!"
     else:
         if (utc_begin-last_time).days > 60:
             activate_user.append(item)
+else:
+    print time.time() - start

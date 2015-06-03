@@ -4,14 +4,15 @@ import pandas as pd
 #from config.db_server import sch_server
 #from config.db import sch,bda,ICCv1
 #import time
-#import datetime
+import datetime
+import pytz
 #from collections import Counter
 #import matplotlib.pyplot as plt
 import requests
 import urllib2,urllib
 #from bs4 import BeautifulSoup
 
-   
+
 #def post(url, data): 
     #req = urllib2.Request(url) 
     #data = urllib.urlencode(data) 
