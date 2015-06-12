@@ -7,7 +7,7 @@ import time
 from collections import defaultdict, Counter
 
 # from config.db_server import sch_server
-from config.db import ICCv1, test, sch
+from config.db import ICCv1, test, sch, sh, utc
 
 # points = ICCv1['points']
 order = sch['order']
@@ -39,15 +39,15 @@ time_start = time.time()
 
 # 红包领取用户
 
-for elem in hongbao.find({"__REMOVED__": False}):
-    user_dict[elem['re_openid']].append('领取红包')
+# for elem in hongbao.find({"__REMOVED__": False}):
+#     user_dict[elem['re_openid']].append('领取红包')
+#
+# print time.time() - time_start
 
-print time.time() - time_start
+# 核心用户
 
-#核心用户
-
-for elem in kjw.find({"__REMOVED__": False,'total_bargain_num':{'$gte':10}}):
-    user_dict[elem['code']].append('')
+for elem in kjw.find({"__REMOVED__": False, 'total_bargain_num': {'$gte': 10}}):
+    user_dict[elem['code']].append('核心用户')
 
 # # 购买用户
 #
@@ -116,11 +116,11 @@ for elem in kjw.find({"__REMOVED__": False,'total_bargain_num':{'$gte':10}}):
 
 # 商品名称
 
-for elem in order.find({"__REMOVED__": False, 'trade_state': 0}):
-    good = elem['body'].encode('utf-8').split(',')
-    user_dict[elem['OpenId']].extend(good)
-
-print time.time() - time_start
+# for elem in order.find({"__REMOVED__": False, 'trade_state': 0}):
+#     good = elem['body'].encode('utf-8').split(',')
+#     user_dict[elem['OpenId']].extend(good)
+#
+# print time.time() - time_start
 
 # 参与活动
 
@@ -150,12 +150,14 @@ for k, v in user_dict.items():
         result = response.read()
         result = json.loads(result)
         result['FromUserName'] = k
+        result['__CREATE_TIME__'] = datetime.datetime.now(tz=sh)
         log.insert(result)
     except Exception as e:
         print k
         print e
         print type(e)
         a = {'FromUserName': k, 'error': str(e)}
+        a['__CREATE_TIME__'] = datetime.datetime.now(tz=sh)
         failed_log.insert(a)
         continue
 
