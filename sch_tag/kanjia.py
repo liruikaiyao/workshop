@@ -36,15 +36,22 @@ for k, v in kanjia_net.items():
     else:
         all_user.extend(v)
 
-print(len(first_level))
+print(len(set(first_level)))
 
 second_level = []
 for elem in first_level:
     second_level.extend(kanjia_net[elem])
 
-print(len(second_level))
+print(len(set(second_level)-set(first_level)))
 
-print(len(all_user))
+thirt_level = []
+for elem in second_level:
+    if elem in kanjia_net:
+        thirt_level.extend(kanjia_net[elem])
+
+print(len(set(thirt_level)-set(second_level)-set(first_level)))
+
+print(len(set(all_user)))
 
 # 生成网图
 G=nx.Graph()
