@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>user net stats</title>
+    </head>
+    <body>
+        <h1>Your key user</h1>
+        <p>user</p>
+        <ul>
+          {% for a,b,c in ten_key_user %}
+            <li><p>{{ a }} {{ b }} {{ c }}</p></li>
+          {% end %}
+        </ul>
+        <p>level</p>
+        <ul>
+          {% for name,num in level_num.items() %}
+            <li><p>{{ name }} {{ num }}</p></li>
+          {% end %}
+        </ul>
+    </body>
+</html>
