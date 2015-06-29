@@ -29,7 +29,6 @@ class PoemPageHandler(tornado.web.RequestHandler):
     def post(self):
         kanjiawu_str = self.get_argument('kanjiawu')
         kanjia_str = self.get_argument('kanjia')
-        desc = self.get_argument('desc')
         detail_str = self.get_argument('detail')
         kanjia = ICCv1[kanjia_str]
         kanjiawu = ICCv1[kanjiawu_str]
