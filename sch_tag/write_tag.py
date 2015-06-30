@@ -11,10 +11,11 @@ from config.db import ICCv1, test, sch, sh, utc
 
 # points = ICCv1['points']
 order = sch['order']
-# member = ICCv1['member']
+member = sch['member']
 # first_shop = ICCv1['first_shop']
 kjw = sch['kanjiawu']
 hongbao = sch['hongbao']
+xiaoxl = sch['xiaoxl']
 log = test['log']
 failed_log = test['failed_log']
 
@@ -32,10 +33,15 @@ time_start = time.time()
 
 # 会员
 
-# for elem in member.find({"__REMOVED__": False}):
-#     user_dict[elem['FromUserName']].append('会员')
-#
-# print time.time() - time_start
+for elem in member.find({"__REMOVED__": False}):
+    user_dict[elem['FromUserName']].append('会员')
+
+print time.time() - time_start
+
+# 消消乐分享好友
+
+# for elem in xiaoxl.find():
+#     user_dict[elem['receiveUserName']].append('消消乐分享好友')
 
 # 红包领取用户
 
@@ -46,11 +52,11 @@ time_start = time.time()
 
 # 核心用户
 
-for elem in kjw.find({"__REMOVED__": False, 'total_bargain_num': {'$gte': 10}}):
-    user_dict[elem['code']].append('核心用户')
+# for elem in kjw.find({"__REMOVED__": False, 'total_bargain_num': {'$gte': 10}}):
+#     user_dict[elem['code']].append('核心用户')
 
-# # 购买用户
-#
+# 购买用户
+
 # for elem in order.find({"__REMOVED__": False, 'trade_state': 0}):
 #     user_dict[elem['OpenId']].append('购买用户')
 #
@@ -63,8 +69,8 @@ for elem in kjw.find({"__REMOVED__": False, 'total_bargain_num': {'$gte': 10}}):
 #                         'trade_state': 0}).count()
 #     if count > 1:
 #         user_dict[elem['OpenId']].append('重复购买')
-#
-# print time.time() - time_start
+
+print time.time() - time_start
 #
 # # 新用户
 #
@@ -146,7 +152,7 @@ for k, v in user_dict.items():
     two = urllib.urlencode({'identifyId': k, 'tags[]': list(set(v))}, True)
     try:
         req = urllib2.Request(url, two)
-        response = urllib2.urlopen(req)
+        response = urllib2.urlopen(req, timeout=0.5)
         result = response.read()
         result = json.loads(result)
         result['FromUserName'] = k
