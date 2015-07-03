@@ -33,15 +33,15 @@ time_start = time.time()
 
 # 会员
 
-for elem in member.find({"__REMOVED__": False}):
-    user_dict[elem['FromUserName']].append('会员')
-
-print time.time() - time_start
+# for elem in member.find({"__REMOVED__": False}):
+#     user_dict[elem['FromUserName']].append('会员')
+#
+# print time.time() - time_start
 
 # 消消乐分享好友
 
-# for elem in xiaoxl.find():
-#     user_dict[elem['receiveUserName']].append('消消乐分享好友')
+for elem in xiaoxl.find():
+    user_dict[elem['receiveUserName']].append('好友参与')
 
 # 红包领取用户
 
