@@ -6,20 +6,22 @@ import urllib2
 import json
 import networkx as nx
 import gridfs
+import tempfile
 
 from config.db import ICCv1, sh, utc, mapreduce
 
 
-class UserNet:
-    def __init__(self, kanjiawu_name, kanjia_name, yaoqing_name, detail_name):
+class UserNet(object):
+    def __init__(self, kanjiawu_name='', kanjia_name='', yaoqing_name='', detail_name=''):
         self.kanjia_name = kanjia_name
         self.kanjiawu_name = kanjiawu_name
         self.yaoqing_name = yaoqing_name
         self.detail_name = detail_name
-        self.kanjia = ICCv1[self.kanjia_name]
-        self.kanjiawu = ICCv1[self.kanjiawu_name]
-        self.yaoqing = ICCv1[self.yaoqing_name]
-        self.detail = ICCv1[self.detail_name]
+        self.kanjia = ICCv1['idatabase_collection_' + self.kanjia_name]
+        self.kanjiawu = ICCv1['idatabase_collection_' + self.kanjiawu_name]
+        self.yaoqing = ICCv1['idatabase_collection_' + self.yaoqing_name]
+        self.detail = ICCv1['idatabase_collection_' + self.detail_name]
+        self.activity_info_db = mapreduce['net_info_db']
         self.fs = gridfs.GridFS(mapreduce)
 
     def kanjia_net(self):
@@ -46,10 +48,10 @@ class UserNet:
                          self.yaoqing.find().sort('__CREATE_TIME__', 1)]
 
         for elem in identity_list:
-            yaoq_dict[elem]=[]
+            yaoq_dict[elem] = []
 
         for elem in self.yaoqing.find().sort('__CREATE_TIME__', 1):
-            if elem['owner_FromUserName']==elem['got_FromUserName']:
+            if elem['owner_FromUserName'] == elem['got_FromUserName']:
                 pass
             else:
                 yaoq_dict[elem['owner_FromUserName']].append(elem['got_FromUserName'])
@@ -59,6 +61,9 @@ class UserNet:
     def draw_dot(self, net_dict):
         # 计算第一层用户
         level_num = dict()
+        level_num['__CREATE_TIME__'] = datetime.datetime.now(utc)
+        level_num['__REMOVED__'] = False
+        level_num['__MODIFY_TIME__'] = datetime.datetime.now(utc)
         first_level = []
         all_user = []
 
@@ -101,16 +106,7 @@ class UserNet:
                                  elem[1],
                                  all_user_name[elem[0]].encode('utf-8')])
 
-        # 生成网图
-        # G = nx.Graph()
-        # for k, v in kanjia_net.items():
-        #     for elem in v:
-        #         G.add_edge(k, elem)
-        #
-        # print(G.number_of_edges())
-        # print(G.number_of_nodes())
-
-        # 过滤出度大于15的节点
+        level_num['ten_key_user'] = ten_key_user
 
         new_net = {}
         for elem in ten_key_user:
@@ -124,9 +120,11 @@ class UserNet:
         print(H.number_of_nodes())
 
         nx.draw_graphviz(H)
-        nx.write_dot(H, 'some_user.dot')
-        file_dot = open('some_user.dot', 'rb')
+        temp = tempfile.mkdtemp()
+        nx.write_dot(H, temp+'some_user.dot')
+        file_dot = open(temp+'some_user.dot', 'rb')
         data = file_dot.read()
         self.fs.put(data, filename='some_user.dot')
+        file_dot.close()
 
-        return level_num
+        self.activity_info_db.insert(level_num)

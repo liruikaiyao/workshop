@@ -6,7 +6,7 @@ import datetime
 import urllib2
 import json
 
-from config.db import ICCv1, sh, utc
+from config.db import ICCv1, sh, utc, mapreduce
 
 # 百度地图API参数
 
@@ -19,14 +19,15 @@ ak = 'SIpMcORCSogM916QMOz5tx7S'
 # 获取用户城市信息
 
 
-class CityTag:
-    def __init__(self, collection_name, begin, end):
+class CityTag(object):
+    def __init__(self, collection_name, begin_name, end_name):
         self.collection_name = collection_name
-        self.begin = begin
-        self.end = end
+        self.begin = begin_name
+        self.end = end_name
         self.weixin = ICCv1[self.collection_name]
         self.begin_utc = self.begin.astimezone(utc)
         self.end_utc = self.end.astimezone(utc)
+        self.activity_info_db = mapreduce['city_info_db']
 
     def getcity(self, one):
         location = one['Latitude'] + ',' + one['Longitude']
@@ -40,7 +41,7 @@ class CityTag:
             return city
 
     def get_city_info(self):
-
+        one = dict()
         city_list = []
         for elem in self.weixin.find({'Event': 'LOCATION',
                                       '__REMOVED__': False,
@@ -50,4 +51,11 @@ class CityTag:
             city_list.append(city_name)
 
         city_info = Counter(city_list)
-        return city_info
+        one['begin'] = self.begin_utc
+        one['end'] = self.end_utc
+        one['city_info'] = city_info
+        one['__CREATE_TIME__'] = datetime.datetime.now(utc)
+        one['__REMOVED__'] = False
+        one['__MODIFY_TIME__'] = datetime.datetime.now(utc)
+        self.activity_info_db.insert(one)
+        return 'work finished'

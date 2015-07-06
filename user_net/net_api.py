@@ -15,15 +15,9 @@ import json
 from tornado.options import define, options
 define("port", default=8000, help="run on the given port", type=int)
 
-class static_file(tornado.web.StaticFileHandler):
-    def set_extra_headers(self, path):
-        self.set_header("Cache-control", "no-cache")
-
-
 class IndexHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('index.html')
-
 
 class PoemPageHandler(tornado.web.RequestHandler):
     def post(self):
@@ -115,18 +109,14 @@ class PoemPageHandler(tornado.web.RequestHandler):
         print(H.number_of_nodes())
 
         nx.draw_graphviz(H)
-        nx.write_dot(H, 'templates/static/some_user.dot')
+        nx.write_dot(H, 'some_user.dot')
 
         self.render('poem.html', level_num=level_num, ten_key_user=ten_key_user)
 
 if __name__ == '__main__':
     tornado.options.parse_command_line()
     app = tornado.web.Application(
-        autoreload=True,
-        handlers=[(r'/', IndexHandler),
-                  (r'/poem', PoemPageHandler),
-                  (r'/static/(.*)',static_file,
-                   {"path":os.path.join(os.path.dirname(__file__), "templates/static")})],
+        handlers=[(r'/', IndexHandler), (r'/poem', PoemPageHandler)],
         template_path=os.path.join(os.path.dirname(__file__), "templates")
     )
     http_server = tornado.httpserver.HTTPServer(app)
