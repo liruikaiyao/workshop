@@ -3,7 +3,7 @@ __author__ = 'Carry lee'
 
 from gearman import GearmanClient
 import os
-import cPickle as pickle
+import pickle
 import tornado.escape
 import tornado.ioloop
 import tornado.web

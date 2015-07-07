@@ -16,7 +16,7 @@ class Gender(object):
         self.collection_name = collection_name
         self.begin = begin_name
         self.end = end_name
-        self.detail = ICCv1['idatabase_collection_' + self.collection_name]
+        self.detail = ICCv1[self.collection_name]
         self.begin_utc = self.begin.astimezone(utc)
         self.end_utc = self.end.astimezone(utc)
         self.activity_info_db = mapreduce['gender_info_db']

@@ -6,7 +6,7 @@ from gearman import GearmanWorker
 from gender_class import Gender
 from city_class import CityTag
 from net_class import UserNet
-import cPickle as pickle
+import pickle
 
 
 def task_gender(GermanWorker, job):

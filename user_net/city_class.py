@@ -24,7 +24,7 @@ class CityTag(object):
         self.collection_name = collection_name
         self.begin = begin_name
         self.end = end_name
-        self.weixin = ICCv1[self.collection_name]
+        self.weixin = ICCv1['weixin']
         self.begin_utc = self.begin.astimezone(utc)
         self.end_utc = self.end.astimezone(utc)
         self.activity_info_db = mapreduce['city_info_db']
