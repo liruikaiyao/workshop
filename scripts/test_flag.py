@@ -1,10 +1,10 @@
 # coding=utf-8
-import numpy as np
-import pandas as pd
-from bs4 import BeautifulSoup
+import numpy
+import toyplot
 
-url=''
-a = []
-b = []
-b = b.extend(a)
+x = numpy.linspace(0, 10)
+y = x ** 2
 
+canvas = toyplot.Canvas(width=300, height=300)
+axes = canvas.axes()
+axes.plot(x, y)
