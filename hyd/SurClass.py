@@ -1,5 +1,5 @@
+# coding=utf-8
 from __future__ import division
-from config.db import hyd_events
 import matplotlib.pyplot as plt
 
 class survival:

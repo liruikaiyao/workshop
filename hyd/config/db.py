@@ -1,7 +1,11 @@
-import pymongo
+# coding=utf-8
 from pymongo import MongoClient
+from pytz import timezone
 
-client = MongoClient('localhost', 27017)
-hyd_events = client['schwarzkopf']['weixin']
-hyd_users = client['schwarzkopf']['detail']
-after_users = client['hyd']['after_users']
+sh = timezone("Asia/Shanghai")
+utc = timezone("utc")
+data_ip = '127.0.0.1'
+client = MongoClient(data_ip, 27017, tz_aware=True)
+ICCv1 = client['ICCv1']
+mapreduce = client['mapreduce']
+sch = client['schwarzkopf']

@@ -25,18 +25,30 @@ def task_gender(germanWorker,job):
 
 def task_kanjia(GermanWorker, job):
     print 'hello!'
-    para = pickle.loads(job.data)
-    print para
-    kanjia = para['kanjia']
-    kanjiawu = para['kanjiawu']
-    yaoqing = para['yaoqing']
-    detail = para['detail']
-    one = UserNet(kanjia_name=kanjia,kanjiawu_name=kanjiawu,
-                  yaoqing_name=yaoqing,detail_name=detail)
-    if yaoqing is 'yaoqing':
-        one.kanjia_net()
-    else:
-        one.yaoq()
+    print job.data
+    activity_info_config = mapreduce['kanjia_config']
+    print (activity_info_config.find_one())
+    for elem in activity_info_config.find({"__REMOVED__": False,
+                                           "is_running": False}):
+        activity_info_config.update({'_id': elem['_id']},
+                                    {'$set': {'is_running': True,
+                                              '__MODIFY_TIME__': datetime.datetime.now(utc)}})
+
+        kanjia = elem['collection_name_kanjia']
+        kanjiawu = elem['collection_name_kanjiawu']
+        yaoqing = elem['collection_name_yaoqing']
+        detail = elem['collection_name']
+        print kanjia,kanjiawu,yaoqing,detail
+        one = UserNet(kanjia_name=kanjia, kanjiawu_name=kanjiawu,
+                      yaoqing_name=yaoqing,detail_name=detail)
+        if yaoqing == u'yaoqing':
+            one.kanjia_net()
+        else:
+            one.yaoq()
+        activity_info_config.update({'_id': elem['_id']},
+                            {'$set': {'is_running': False,
+                                      '__MODIFY_TIME__': datetime.datetime.now(utc)}})
+
     return 'successful received kanjia'
 
 def task_city_tag(GermanWorker, job):

@@ -8,7 +8,7 @@ import networkx as nx
 import gridfs
 import tempfile
 
-from config.db import ICCv1, sh, utc, mapreduce
+from config.db import ICCv1, sh, utc, mapreduce,sch
 
 
 class UserNet(object):
@@ -17,10 +17,14 @@ class UserNet(object):
         self.kanjiawu_name = kanjiawu_name
         self.yaoqing_name = yaoqing_name
         self.detail_name = detail_name
-        self.kanjia = ICCv1['idatabase_collection_' + self.kanjia_name]
-        self.kanjiawu = ICCv1['idatabase_collection_' + self.kanjiawu_name]
-        self.yaoqing = ICCv1['idatabase_collection_' + self.yaoqing_name]
-        self.detail = ICCv1['idatabase_collection_' + self.detail_name]
+        self.kanjia = sch[self.kanjia_name]
+        self.kanjiawu = sch[self.kanjiawu_name]
+        self.yaoqing = sch[self.yaoqing_name]
+        self.detail = sch[self.detail_name]
+        print self.detail.count()
+        print self.kanjia.count()
+        print self.kanjiawu.count()
+        print self.yaoqing.count()
         self.activity_info_db = mapreduce['net_info_db']
         self.fs = gridfs.GridFS(mapreduce)
 
@@ -38,7 +42,7 @@ class UserNet(object):
             for item in cursor:
                 every_key.append(item['identity_id'])
             kanjia_net[elem['code']] = list(set(every_key))
-
+        print len(kanjia_net)
         self.draw_dot(kanjia_net)
 
     def yaoq(self):
@@ -55,7 +59,7 @@ class UserNet(object):
                 pass
             else:
                 yaoq_dict[elem['owner_FromUserName']].append(elem['got_FromUserName'])
-
+        print len(yaoq_dict)
         self.draw_dot(yaoq_dict)
 
     def draw_dot(self, net_dict):
@@ -102,9 +106,9 @@ class UserNet(object):
         a = {k: len(set(v)) for k, v in net_dict.items()}
         b = sorted(a.iteritems(), key=lambda d: d[1], reverse=True)
         for elem in b[:10]:
-            ten_key_user.append([elem[0].encode('utf-8'),
+            ten_key_user.append([elem[0],
                                  elem[1],
-                                 all_user_name[elem[0]].encode('utf-8')])
+                                 all_user_name[elem[0]]])
 
         level_num['ten_key_user'] = ten_key_user
 
@@ -116,8 +120,11 @@ class UserNet(object):
             for elem in v:
                 H.add_edge(all_user_name[k], all_user_name[elem])
 
-        print(H.number_of_edges())
-        print(H.number_of_nodes())
+        self.activity_info_db.insert(level_num)
+        print H.number_of_nodes()
+        print H.number_of_edges()
+        for k,v in level_num.items():
+            print k,v
 
         nx.draw_graphviz(H)
         temp = tempfile.mkdtemp()
@@ -126,5 +133,9 @@ class UserNet(object):
         data = file_dot.read()
         self.fs.put(data, filename='some_user.dot')
         file_dot.close()
+        print 'till now you see sth'
 
-        self.activity_info_db.insert(level_num)
+if __name__ == "__main__":
+    one = UserNet(kanjia_name='kanjia', kanjiawu_name='kanjiawu',
+              yaoqing_name='yaoqing',detail_name='detail')
+    one.yaoq()
